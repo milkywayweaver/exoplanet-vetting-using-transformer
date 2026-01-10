@@ -1,5 +1,4 @@
-# exoplanet-vetting-using-transformer
-Exoplanet vetting model using multi input transformer approach.
+# Exoplanet Vetter Using Transformers
 
 ### Introduction
 Exoplanets are planet that lie outside of the Solar System and orbit stars other than the Sun. Ever since its discorvery in 1992, over 4000 exoplanets have been discovered through various means, such as trasnit method, radial velocity method, direct imaging, etc. Transit method has been the most productive methods at detecting an exoplanet. As of January 10th 2026, out of around 6000 confirmed exoplanets, 73.8% of the them are found using the transit method.
@@ -11,10 +10,29 @@ But, not every decrease (or dip) in the light curve corresponds to an exoplanet.
 Ever since its introduction in 2017, transformers have reshaped a lot of state-of-the-art architectures in many fields, including natural language processing and computer vision. It utilizes attention to see the sequential influece of one data point to the others, making it suitable for sequential data. In this study, we tried to use transformer architecture to replace the CNN feature extractor of ExoNet.
 
 ### Dataset
-We use the dataset used for ExoNet provided by Ansdell et all (2018), which includes Kepler light curves and centroid curves for both global and local views, as well as some stellar parameters such as stellar effective temperature, surface gravity, metallicity, etc. Then, we load the data into a single csv file that contains all the features, one file for one set (train, validation, and test). We do not perform further preprocessing as most has been done by Ansdell et al. Then we augment the data by randomly flipping the x-axis of the light curve and centroid curve for both the global and local views. The train set contains 11937 entries whereas the validation and test contains 1574 entries. In each set, only around 22% are labeled planet candidate and the rest are labeled false positives. 
+We use the dataset used for ExoNet provided by Ansdell et all (2018), which includes Kepler light curves and centroid curves for both global and local views, as well as some stellar parameters such as stellar effective temperature, surface gravity, metallicity, etc. Then, we load the data into a single csv file that contains all the features, one file for one set (train, validation, and test). We do not perform further preprocessing as most has been done by Ansdell et al. Then we augment the data by randomly flipping the x-axis of the light curve and centroid curve for both the global and local views. The train set contains 11937 entries whereas the validation and test contains 1574 entries. In each set, only around 22% are labeled planet candidate and the rest are labeled false positives.
+
+### Architecure
+The overall structure of the model is similar to ExoNet, except that we replace the CNN feature extractor with transformer encoders. To create the embeddings for the global and local views, we pass the data into a single convolutional layer with kernel size of 5, padding of 2, and stride of 1, before passing it through an average pooling layer. The result is an embedding of the features in E dimensional space with length L. Then trainable positional encoding is added to preserve order. The transformer encoder is inspired by the vision transformer (Dosovitskiy, 2020)) implementation of the encoder, which applies the layer normalization before the multihead attention (MHA) and multi layer perceptron (MLP). Residual connection is then added after each MHA and MLP. After the all of the encoder blocks, the CLS_token is taken from each view, and then concatenated with the stellar parameters before passing it through another MLP head. Sigmoid activation function is used for the output activation function. 
+
+<img width="3508" height="2481" alt="Exoplanet Transformer Schematic" src="https://github.com/user-attachments/assets/443d09d1-9fcb-4686-bd75-b004baa06ee3" />
+Figure 1. Architecture used in this study.
+
+### Results
+*** STILL TRAINING HOLD ON ***
+
+### Credits & Resources
+This project was developed following the educational framework provided by:
+* **Instructor:** Mohammed Fahd Abrah
+* **Platform:** [freeCodeCamp.org](https://www.youtube.com/c/Freecodecamp)
+* **Course:** [Building a Vision Transformer Model from Scratch with PyTorch](https://youtu.be/7o1jpvapaT0)
 
 ### Reference
 Ansdell, M., Ioannou, Y., Osborn, H. P., Sasdelli, M., Smith, J. C., Caldwell, D., ... & Angerhausen, D. (2018). Scientific domain knowledge improves exoplanet transit classification with deep learning. The Astrophysical journal letters, 869(1), L7.
+
+Dosovitskiy, A. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.
+
+freeCodeCamp.org. (2025, May 7). Building a Vision Transformer Model from Scratch with PyTorch [Video]. YouTube. https://youtu.be/7o1jpvapaT0?si=ATyNV0c_Cyd82y-U
 
 Huang, S., & Jiang, C. (2025). Machine Learning for Exoplanet Discovery: Validating TESS Candidates and Identifying Planets in the Habitable Zone. arXiv preprint arXiv:2512.00967.
 
