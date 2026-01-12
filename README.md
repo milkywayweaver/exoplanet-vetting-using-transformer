@@ -10,7 +10,7 @@ But, not every decrease (or dip) in the light curve corresponds to an exoplanet.
 Ever since its introduction in 2017, transformers have reshaped a lot of state-of-the-art architectures in many fields, including natural language processing and computer vision. It utilizes attention to see the sequential influece of one data point to the others, making it suitable for sequential data. In this study, we tried to use transformer architecture to replace the CNN feature extractor of ExoNet.
 
 ### Dataset
-We use the dataset used for ExoNet provided by Ansdell et all (2018), which includes Kepler light curves and centroid curves for both global and local views, as well as some stellar parameters such as stellar effective temperature, surface gravity, metallicity, etc. Then, we load the data into a single csv file that contains all the features, one file for one set (train, validation, and test). We do not perform further preprocessing as most has been done by Ansdell et al. Then we augment the data by randomly flipping the x-axis of the light curve and centroid curve for both the global and local views. The train set contains 11937 entries whereas the validation and test contains 1574 entries. In each set, only around 22% are labeled planet candidate and the rest are labeled false positives.
+We use the dataset used for ExoNet provided by Ansdell et all (2018), which includes Kepler light curves and centroid curves for both global and local views, as well as some stellar parameters such as stellar effective temperature, surface gravity, metallicity, etc. Then, we load the data into a single csv file that contains all the features, one file for one set (train, validation, and test). We do not perform further preprocessing as most has been done by Ansdell et al. Then we augment the data by randomly flipping the x-axis of the light curve and centroid curve for both the global and local views. Unlike the work of Ansdell, we do not give random gaussian noise to the dataset. The train set contains 11937 entries whereas the validation and test contains 1574 entries. In each set, only around 22% are labeled planet candidate and the rest are labeled false positives.
 
 ### Architecure
 The overall structure of the model is similar to ExoNet, except that we replace the CNN feature extractor with transformer encoders. To create the embeddings for the global and local views, we pass the data into a single convolutional layer with kernel size of 5, padding of 2, and stride of 1, before passing it through an average pooling layer. The result is an embedding of the features in E dimensional space with length L. Then trainable positional encoding is added to preserve order. The transformer encoder is inspired by the vision transformer (Dosovitskiy, 2020)) implementation of the encoder, which applies the layer normalization before the multihead attention (MHA) and multi layer perceptron (MLP). Residual connection is then added after each MHA and MLP. After the all of the encoder blocks, the CLS_token is taken from each view, and then concatenated with the stellar parameters before passing it through another MLP head. Sigmoid activation function is used for the output activation function. 
@@ -19,7 +19,35 @@ The overall structure of the model is similar to ExoNet, except that we replace 
 Figure 1. Architecture used in this study.
 
 ### Results
-*** STILL TRAINING HOLD ON ***
+We train the model with the following hyperparameters:
+* Batch Size: 32
+* Embedding Dimension: 64
+* Number of Heads: 8
+* Dropout Rate: 0.5
+* MLP Hidden Size: 256
+* Number of Encoders: 4
+* Global Embed Length: 512
+* Local Embed Length: 256
+* Number of Classes: 1
+* Learning Rate: 1e-05
+* Epochs: 100 <br>
+
+We got accuracy of 0.9644, recall of 0.9361, and precision of 0.9108. The accuracy is around 1% better than the AstroNet (Shallue & Vanderburg, 2018) but still 1% lower than ExoNet (Ansdell et al, 2018). Note that we give different augmentation to the dataset, so this comparison is not 100% apple to apple. Below is the confusion matrix on the test set using this model.
+<br>
+<img width="700" height="600" alt="8_confmat" src="https://github.com/user-attachments/assets/808f3b25-5bb6-4ace-923f-f4aec264f4af" />
+<br>
+Figure 2. Confusion matrix of transformer model on the test set. x-axis represents the predicted label and the y-axis represents the true label.
+<br>
+<br>
+We also tried ExoNet provided by Ansdell et al using our dataset format and augmentation. In our testing, ExoNet still performs better than our transformer model, with accuracy of 0.9771, recall of 0.9583, and precision of 0.9426. Below is the confusion matrix of the ExoNet model.
+<br>
+<img width="700" height="600" alt="exonet_confmat" src="https://github.com/user-attachments/assets/a1581c5f-4e2b-47c4-9835-0671604ed5ee" />
+<br>
+Figure 3. Confusion matrix of ExoNet model on the test set. x-axis represents the predicted label and the y-axis 
+<br>
+
+### Conclusion
+We tried applying transformer architecture as feature extractor as opposed to CNN in ExoNet model. Though it works and achieves relatively good accuracy, it could not surpass ExoNet just yet. There are numbers of ways to improve the transformer model, such as examining different hyperparameters, changing the transformer implementation, etc.
 
 ### Credits & Resources
 This project was developed following the educational framework provided by:
