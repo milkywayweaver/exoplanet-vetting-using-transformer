@@ -39,7 +39,7 @@ We got accuracy of 0.9644, recall of 0.9361, and precision of 0.9108. The accura
 Figure 2. Confusion matrix of transformer model on the test set. x-axis represents the predicted label and the y-axis represents the true label.
 <br>
 <br>
-We also tried ExoNet provided by Ansdell et al using our dataset format and augmentation. In our testing, ExoNet still performs better than our transformer model, with accuracy of 0.9771, recall of 0.9583, and precision of 0.9426. Below is the confusion matrix of the ExoNet model.
+We also tried ExoNet provided by Ansdell et al using our dataset format and augmentation. We modified the code a little to fit the format of the dataset we use. In our testing, ExoNet still performs better than our transformer model, with accuracy of 0.9771, recall of 0.9583, and precision of 0.9426. Below is the confusion matrix of the ExoNet model.
 <br>
 <img width="700" height="600" alt="exonet_confmat" src="https://github.com/user-attachments/assets/a1581c5f-4e2b-47c4-9835-0671604ed5ee" />
 <br>
