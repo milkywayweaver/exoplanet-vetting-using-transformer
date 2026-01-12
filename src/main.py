@@ -14,22 +14,22 @@ from dataset import LightCurveDataset
 from model import Transformer
 from trainloop import train_loop
 
-os.makedirs('../figs',exist_ok=True)
+os.makedirs('./figs',exist_ok=True)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 ''' DEFINE HYPERPARAMETER '''
-BATCH_SIZE = 64
-EMBED_DIMS = 128
+BATCH_SIZE = 32
+EMBED_DIMS = 64
 NUM_HEADS = 8
 DROPOUT = 0.5
 HIDDEN = 256
-DEPTH = 6
+DEPTH = 4
 GLOBAL_EMBED_LENGTH = 512
 LOCAL_EMBED_LENGTH = 256
 NUM_CLASSES = 1
 LR = 1e-5
 EPOCHS = 100
-FILENAME = 'full_avgPool_4_65BS'
+FILENAME = '8'
 
 ''' DATA READING '''
 train_frame = pd.read_csv('../data/train_dataset_full.csv')
@@ -89,7 +89,7 @@ plt.legend(loc='lower right')
 
 plt.suptitle('Progress Plot')
 plt.tight_layout()
-plt.savefig(f'../figs/{FILENAME}_losscurve.png')
+plt.savefig(f'./figs/{FILENAME}_losscurve.png')
 plt.close()
 
 ''' EVALUATE '''
@@ -123,9 +123,24 @@ plt.xticks([0.5,1.5],classes)
 plt.yticks([0.5,1.5],classes)
 plt.title(f'Accuracy: {all_accs:.4f}\nRecall: {all_recalls:.4f}\nPrecision: {all_precision:.4f}')
 plt.tight_layout()
-plt.savefig(f'../figs/{FILENAME}_confmat.png')
+plt.savefig(f'./figs/{FILENAME}_confmat.png')
 plt.close()
 
 ''' SAVE '''
-os.makedirs('../saves',exist_ok=True)
-torch.save(MODEL.state_dict(), f'../saves/vit_latefusion_{FILENAME}.pth')
+os.makedirs('./saves',exist_ok=True)
+torch.save(MODEL.state_dict(), f'./saves/vit_latefusion_{FILENAME}.pth')
+
+
+''' PRINT '''
+print(f'Batch Size: {BATCH_SIZE}')
+print(f'Embedding Dimension: {EMBED_DIMS}')
+print(f'Number of Heads: {NUM_HEADS}')
+print(f'Dropout Rate: {DROPOUT}')
+print(f'MLP Hidden Size: {HIDDEN}')
+print(f'Number of Encoders: {DEPTH}')
+print(f'Global Embed Length: {GLOBAL_EMBED_LENGTH}')
+print(f'Local Embed Length: {LOCAL_EMBED_LENGTH}')
+print(f'Number of Classes: {NUM_CLASSES}')
+print(f'Learning Rate: {LR}')
+print(f'Epochs: {EPOCHS}')
+print(f'File Name: {FILENAME}')
