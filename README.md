@@ -1,7 +1,7 @@
 # Exoplanet Vetter Using Transformers
 
 ### Introduction
-Exoplanets are planet that lie outside of the Solar System and orbit stars other than the Sun. Ever since its discorvery in 1992, over 4000 exoplanets have been discovered through various means, such as trasnit method, radial velocity method, direct imaging, etc. Transit method has been the most productive methods at detecting an exoplanet. As of January 10th 2026, out of around 6000 confirmed exoplanets, 73.8% of the them are found using the transit method.
+Exoplanets are planet that lie outside of the Solar System and orbit stars other than the Sun. Ever since its discorvery in 1992, over 4000 exoplanets have been discovered through various means, such as transit method, radial velocity method, direct imaging, etc. Transit method has been the most productive methods at detecting an exoplanet. As of January 10th 2026, out of around 6000 confirmed exoplanets, 73.8% of the them are found using the transit method.
 
 When an exoplanet crosses the stellar disk, some of the star light is blocked by the planet. We can detect an exoplanet by looking at the decrease in the star light observed, which can be done by continously observing the star and constructing a light curve. A light curve is a graph that represents light observed as a function of time.
 
